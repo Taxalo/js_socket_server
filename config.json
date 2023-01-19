@@ -1,5 +1,7 @@
 {
   "token": "",
   "clientId": "",
-  "webhook": ""
+  "webhook": "",
+  "secret": "",
+  "mongoURI": ""
 }

@@ -4,6 +4,8 @@ const {Webhook} = require("discord-webhook-node");
 const {webhook} = require("../config.json");
 const router = Router();
 const hook = new Webhook(webhook);
+const checkToken = require("../middleware/checkToken");
+const fs = require("fs");
 
 // https://medium.com/swlh/how-to-implement-image-upload-using-express-and-multer-postgresql-c6de64679f2
 
@@ -25,7 +27,7 @@ const imageUpload = multer({
     ),
 });
 
-router.get("/images", (_req, res) => {
+router.get("/images", checkToken, (_req, res) => {
     const images = fs.readdirSync("images").filter(f => f.endsWith(".png"));
     res.status(200).json(images[images.length - 1]);
 });
