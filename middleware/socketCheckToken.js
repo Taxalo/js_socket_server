@@ -12,7 +12,9 @@ const socketCheckToken = async (token) => {
 
         if (!reqToken || !reqToken.user || hasExpired(reqToken)) return false;
 
-        jwt.verify(token, `${secret}__${reqToken.user}`);
+        jwt.verify(token, `${secret}__${reqToken.user}`, (err) => {
+            if (err) return false;
+        });
 
     } catch (e) {
         return false;
@@ -21,7 +23,8 @@ const socketCheckToken = async (token) => {
 }
 
 const hasExpired = (reqToken) => {
-    return reqToken.createdAt + reqToken.expiresIn > Date.now();
+    const now = new Date();
+    return now > (reqToken.createdAt + reqToken.expiresIn);
 }
 
 module.exports = socketCheckToken;

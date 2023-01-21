@@ -87,17 +87,16 @@ router.get("/auth", checkToken, async (req, res) => {
 });
 
 async function generateToken(user) {
-    const expiration = Math.floor(Date.now() / 1000) + 3600
     const token = jwt.sign({
         user
     }, `${secret}__${user}`, {
-        expiresIn: expiration
+        expiresIn: 3600
     });
 
     const newToken = new Token({
         user,
         token,
-        expiresIn: expiration
+        expiresIn: 3600
     });
 
     await newToken.save();

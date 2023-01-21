@@ -14,11 +14,17 @@ const checkToken = async (req, res, next) => {
             token
         });
 
-        if (!reqToken || !reqToken.user || hasExpired(reqToken)) return res.status(401).send({
-            msg: "Unauthorized"
-        });
+        if (!reqToken || !reqToken.user || hasExpired(reqToken)) {
+            return res.status(401).send({
+                msg: "Unauthorized"
+            });
+        }
 
-        jwt.verify(token, `${secret}__${reqToken.user}`);
+        jwt.verify(token, `${secret}__${reqToken.user}`, (err) => {
+            if (err) return res.status(400).send({
+                msg: "Invalid token"
+            });
+        });
     } catch (e) {
         res.status(400).send({
             msg: "Invalid token"
@@ -29,7 +35,8 @@ const checkToken = async (req, res, next) => {
 }
 
 const hasExpired = (reqToken) => {
-    return reqToken.createdAt + reqToken.expiresIn > Date.now();
+    const now = new Date();
+    return now > (reqToken.createdAt + reqToken.expiresIn);
 }
 
 module.exports = checkToken;
