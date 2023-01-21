@@ -15,7 +15,7 @@ router.post("/register", async (req, res) => {
         message: "You need to specify an user and a password"
     });
 
-        const reqUser = await User.findOne({
+    const reqUser = await User.findOne({
         user
     });
 
@@ -87,10 +87,10 @@ router.get("/auth", checkToken, async (req, res) => {
 });
 
 async function generateToken(user) {
-    const expiration =  Math.floor(Date.now() / 1000) + 3600
+    const expiration = Math.floor(Date.now() / 1000) + 3600
     const token = jwt.sign({
         user
-      }, `${secret}__${user}`, {
+    }, `${secret}__${user}`, {
         expiresIn: expiration
     });
 

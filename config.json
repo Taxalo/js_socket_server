@@ -3,5 +3,6 @@
   "clientId": "",
   "webhook": "",
   "secret": "",
-  "mongoURI": ""
+  "mongoURI": "",
+  "discordEnabled": false
 }

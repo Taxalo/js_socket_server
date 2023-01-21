@@ -1,7 +1,7 @@
 const multer = require('multer');
 const {Router} = require("express");
 const {Webhook} = require("discord-webhook-node");
-const {webhook} = require("../config.json");
+const {webhook, discordEnabled} = require("../config.json");
 const router = Router();
 const hook = new Webhook(webhook);
 const checkToken = require("../middleware/checkToken");
@@ -33,7 +33,7 @@ router.get("/images", checkToken, (_req, res) => {
 });
 
 router.post("/image", imageUpload.single("ss"), async (req, res) => {
-    await hook.sendFile(`./images/${req.file.filename}`);
+    if (discordEnabled) await hook.sendFile(`./images/${req.file.filename}`);
     res.sendStatus(200);
 });
 

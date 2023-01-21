@@ -5,7 +5,7 @@ const app = express();
 const cors = require("cors");
 const fs = require("fs");
 const mongoose = require("mongoose");
-const {mongoURI} = require("./config.json");
+const {mongoURI, discordEnabled} = require("./config.json");
 app.use(express.json());
 app.use(cors({
     origin: "*"
@@ -33,7 +33,7 @@ app.use("/", require("./routes/images"));
 app.use("/", require("./routes/others"));
 
 socketManager(io)
-startDiscord();
+if (discordEnabled) startDiscord();
 
 http.listen(port, () => {
     console.log(`Socket.IO server running at https://localhost:${port}/`);
